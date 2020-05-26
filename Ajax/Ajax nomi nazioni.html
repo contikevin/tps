@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+​
+<div>
+  <p>Inizia a scrivere il nome di un paese nel campo qua sotto:</p>		<!-- inserimento del nome del paese -->
+  <p>Paese: <input type="text" onkeyup="showHint(this.value)"></p>		
+  <p>Suggerimenti: <span id="result"></span></p>						<!--elenco suggerimenti dei paesi iniziali con la lettera inserita  -->
+</div>
+​
+<script>
+var elem = document.getElementById("result");				<!-- ottiene la variabile da result  -->
+function showHint(name) {									<!-- funzione per mostrare i nomi suggeriti -->
+  if (name.length === 0) {									<!-- se la lunghezza della stringa è 0 non suggerisce nomi -->
+     elem.innerHTML = "";
+     return;
+  } else {
+     var httpRequest = new XMLHttpRequest();
+     httpRequest.onreadystatechange = function() {
+       if (this.readyState === 4 && this.status === 200) {
+          elem.innerHTML = this.responseText;							<!-- il risultato è dato tramite una stringa di risposta -->
+       }
+     };
+     httpRequest.open("GET", "ajax_hint.php?q=" + name, true);			<!-- ottiene il suggerimento dal file php -->
+     httpRequest.send();
+  }
+}
+</script>
+​
+</body>
+</html>
